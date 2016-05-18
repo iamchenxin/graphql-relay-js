@@ -12,13 +12,13 @@ import {
   GraphQLInterfaceType,
   GraphQLNonNull,
   GraphQLID
-} from 'graphql';
+} from 'flow-graphql';
 
 import type {
   GraphQLFieldConfig,
   GraphQLObjectType,
   GraphQLResolveInfo
-} from 'graphql';
+} from 'flow-graphql';
 
 import {
   base64,
@@ -30,8 +30,7 @@ type GraphQLNodeDefinitions = {
   nodeField: GraphQLFieldConfig
 }
 
-type typeResolverFn = (object: any) => ?GraphQLObjectType |
-                      (object: any) => ?Promise<GraphQLObjectType>;
+type typeResolverFn = (object: any) => ?GraphQLObjectType ;
 
 /**
  * Given a function to map from an ID to an underlying object, and a function
@@ -45,7 +44,7 @@ type typeResolverFn = (object: any) => ?GraphQLObjectType |
  */
 export function nodeDefinitions(
   idFetcher: ((id: string, context: any, info: GraphQLResolveInfo) => any),
-  typeResolver?: ?typeResolverFn
+  typeResolver?: typeResolverFn
 ): GraphQLNodeDefinitions {
   var nodeInterface = new GraphQLInterfaceType({
     name: 'Node',

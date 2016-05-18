@@ -17,7 +17,7 @@ import {
   GraphQLSchema,
   GraphQLString,
   graphql
-} from 'graphql';
+} from 'flow-graphql';
 
 import {
   nodeDefinitions

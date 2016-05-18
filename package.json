@@ -40,7 +40,7 @@
     "testonly": "mocha $npm_package_options_mocha",
     "lint": "eslint src",
     "check": "flow check",
-    "build": "rm -rf lib/* && babel src --ignore __tests__ --optional runtime --out-dir lib",
+    "build": "rm -rf lib/* && babel src --ignore __tests__ --optional runtime --out-dir lib && gulp flow",
     "watch": "babel --optional runtime scripts/watch.js | node",
     "cover": "babel-node node_modules/.bin/isparta cover --root src --report html node_modules/.bin/_mocha -- $npm_package_options_mocha",
     "cover:lcov": "babel-node node_modules/.bin/isparta cover --root src --report lcovonly node_modules/.bin/_mocha -- $npm_package_options_mocha"
@@ -49,7 +49,7 @@
     "babel-runtime": "~5.8.3"
   },
   "peerDependencies": {
-    "graphql": "~0.5.0"
+    "flow-graphql": "~0.5.2"
   },
   "devDependencies": {
     "babel": "5.8.3",
@@ -60,7 +60,11 @@
     "coveralls": "2.11.8",
     "eslint": "2.2.0",
     "flow-bin": "0.22.1",
-    "graphql": "0.5.0",
+    "flow-graphql": "file:///home/iamchenxin/project/tmp/graphpub/flow-graphql5",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.6.0",
     "isparta": "3.0.3",
     "mocha": "2.2.5",
     "sane": "1.1.3"

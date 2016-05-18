@@ -11,18 +11,25 @@
 import {
   GraphQLList,
   GraphQLNonNull,
-} from 'graphql';
+} from 'flow-graphql';
 
 import type {
   GraphQLFieldConfig,
-  GraphQLInputType,
+  GraphQLScalarType,
+  GraphQLEnumType,
+  GraphQLInputObjectType,
   GraphQLOutputType,
   GraphQLResolveInfo
-} from 'graphql';
+} from 'flow-graphql';
+
+type PluralInputType =
+  GraphQLScalarType |
+  GraphQLEnumType |
+  GraphQLInputObjectType ;
 
 type PluralIdentifyingRootFieldConfig = {
   argName: string,
-  inputType: GraphQLInputType,
+  inputType: PluralInputType,
   outputType: GraphQLOutputType,
   resolveSingleInput:
     (input: any, context: any, info: GraphQLResolveInfo) => ?any,

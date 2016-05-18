@@ -14,7 +14,7 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
-import {GraphQLInt, GraphQLObjectType, GraphQLSchema, graphql} from 'graphql';
+import {GraphQLInt, GraphQLObjectType, GraphQLSchema, graphql} from 'flow-graphql';
 
 import {
   mutationWithClientMutationId
@@ -65,7 +65,7 @@ var simpleRootValueMutation = mutationWithClientMutationId({
       type: GraphQLInt
     }
   },
-  mutateAndGetPayload: (params, context, {rootValue}) => (rootValue)
+  mutateAndGetPayload: (params, context, {rootValue}) => (rootValue ? rootValue : {})
 });
 
 var mutation = new GraphQLObjectType({
@@ -93,8 +93,9 @@ describe('mutationWithClientMutationId()', () => {
       }
     `;
     var result = await graphql(schema, query);
-    expect(result.errors.length).to.equal(1);
-    expect(result.errors[0].message).to.equal('Field \"simpleMutation\" argument \"input\" of type \"SimpleMutationInput!\" is required but not provided.');
+    const errors:any = result.errors;
+    expect(errors.length).to.equal(1);
+    expect(errors[0].message).to.equal('Field \"simpleMutation\" argument \"input\" of type \"SimpleMutationInput!\" is required but not provided.');
   });
 
   it('returns the same client mutation ID', () => {

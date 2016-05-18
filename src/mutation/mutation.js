@@ -13,18 +13,52 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString
-} from 'graphql';
+} from 'flow-graphql';
 
 import type {
-  GraphQLFieldConfig,
+  GraphQLOutputType,
+  GraphQLFieldConfigArgumentMap,
   InputObjectConfigFieldMap,
   GraphQLFieldConfigMap,
-  GraphQLResolveInfo
-} from 'graphql';
+  GraphQLResolveInfo,
+  Field,
+  GraphQLCompositeType,
+  GraphQLSchema,
+  FragmentDefinition,
+  OperationDefinition
+} from 'flow-graphql';
 
 type mutationFn =
-  (object: Object, ctx: Object, info: GraphQLResolveInfo) => Object |
-  (object: Object, ctx: Object, info: GraphQLResolveInfo) => Promise<Object>;
+  (object: Object, ctx: mixed, info: RelayResolveInfo) => Object |
+  (object: Object, ctx: mixed, info: RelayResolveInfo) => Promise<Object>;
+
+type RelayFieldResolveFn = (
+  source: Object,
+  args: {'input':Object},
+  context: mixed,
+  info: GraphQLResolveInfo
+) => mixed
+
+
+type RelayFieldConfig = {
+  type: GraphQLOutputType;
+  args?: GraphQLFieldConfigArgumentMap;
+  resolve?: RelayFieldResolveFn;
+  deprecationReason?: ?string;
+  description?: ?string;
+}
+
+type RelayResolveInfo = {
+  fieldName: string,
+  fieldASTs: Array<Field>,
+  returnType: GraphQLOutputType,
+  parentType: GraphQLCompositeType,
+  schema: GraphQLSchema,
+  fragments: { [fragmentName: string]: FragmentDefinition },
+  rootValue?: Object,
+  operation: OperationDefinition,
+  variableValues: { [variableName: string]: mixed },
+}
 
 function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
   return typeof thingOrThunk === 'function' ? thingOrThunk() : thingOrThunk;
@@ -57,7 +91,7 @@ type MutationConfig = {
  */
 export function mutationWithClientMutationId(
   config: MutationConfig
-): GraphQLFieldConfig {
+): RelayFieldConfig {
   var {name, inputFields, outputFields, mutateAndGetPayload} = config;
   var augmentedInputFields = () => ({
     ...resolveMaybeThunk(inputFields),
