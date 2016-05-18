@@ -39,7 +39,6 @@ type RelayFieldResolveFn = (
   info: GraphQLResolveInfo
 ) => mixed
 
-
 type RelayFieldConfig = {
   type: GraphQLOutputType;
   args?: GraphQLFieldConfigArgumentMap;
@@ -55,7 +54,7 @@ type RelayResolveInfo = {
   parentType: GraphQLCompositeType,
   schema: GraphQLSchema,
   fragments: { [fragmentName: string]: FragmentDefinition },
-  rootValue?: Object,
+  rootValue: ?Object,
   operation: OperationDefinition,
   variableValues: { [variableName: string]: mixed },
 }
