@@ -13,7 +13,7 @@ import {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
-} from 'graphql';
+} from 'flow-graphql';
 
 import {
   nodeDefinitions,

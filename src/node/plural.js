@@ -11,14 +11,17 @@
 import {
   GraphQLList,
   GraphQLNonNull,
-} from 'graphql';
+} from 'flow-graphql';
 
 import type {
   GraphQLFieldConfig,
   GraphQLInputType,
   GraphQLOutputType,
-  GraphQLResolveInfo
-} from 'graphql';
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLEnumType,
+  GraphQLInputObjectType
+} from 'flow-graphql';
 
 type PluralIdentifyingRootFieldConfig = {
   argName: string,
@@ -36,9 +39,7 @@ export function pluralIdentifyingRootField(
   inputArgs[config.argName] = {
     type: new GraphQLNonNull(
             new GraphQLList(
-              new GraphQLNonNull(
-                config.inputType
-              )
+              nonNull(config.inputType)
             )
           )
   };
@@ -55,4 +56,18 @@ export function pluralIdentifyingRootField(
       ));
     }
   };
+}
+
+type NonNullInputType = GraphQLNonNull<
+    GraphQLScalarType |
+    GraphQLEnumType |
+    GraphQLInputObjectType |
+    GraphQLList<GraphQLInputType> >;
+
+function nonNull(type:GraphQLInputType):NonNullInputType {
+  if ( type instanceof GraphQLNonNull) {
+    return type;
+  } else {
+    return new GraphQLNonNull(type);
+  }
 }

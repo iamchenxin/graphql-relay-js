@@ -14,7 +14,7 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
-import {GraphQLInt, GraphQLObjectType, GraphQLSchema, graphql} from 'graphql';
+import {GraphQLInt, GraphQLObjectType, GraphQLSchema, graphql} from 'flow-graphql';
 
 import {
   mutationWithClientMutationId
@@ -92,7 +92,7 @@ describe('mutationWithClientMutationId()', () => {
         }
       }
     `;
-    var result = await graphql(schema, query);
+    var result:any = await graphql(schema, query);
     expect(result.errors.length).to.equal(1);
     expect(result.errors[0].message).to.equal('Field \"simpleMutation\" argument \"input\" of type \"SimpleMutationInput!\" is required but not provided.');
   });
