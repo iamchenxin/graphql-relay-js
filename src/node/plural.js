@@ -43,6 +43,9 @@ export function pluralIdentifyingRootField(
             )
           )
   };
+//  console.log(config);
+//  console.dir(inputArgs);
+//  console.dir(inputArgs.usernames.type.ofType.ofType);
   return {
     description: config.description,
     type: new GraphQLList(config.outputType),
@@ -64,7 +67,7 @@ type NonNullInputType = GraphQLNonNull<
     GraphQLInputObjectType |
     GraphQLList<GraphQLInputType> >;
 
-function nonNull(type:GraphQLInputType):NonNullInputType {
+export function nonNull(type:GraphQLInputType):NonNullInputType {
   if ( type instanceof GraphQLNonNull) {
     return type;
   } else {

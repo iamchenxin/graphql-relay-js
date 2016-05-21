@@ -65,7 +65,9 @@ var simpleRootValueMutation = mutationWithClientMutationId({
       type: GraphQLInt
     }
   },
-  mutateAndGetPayload: (params, context, {rootValue}) => (rootValue)
+  // ToDo: check if Relay narrowed GraphQLResolveInfo.rootValue to Object
+  mutateAndGetPayload: (params, context, {rootValue}) =>
+    ( (rootValue instanceof Object) ? rootValue : {} )
 });
 
 var mutation = new GraphQLObjectType({
