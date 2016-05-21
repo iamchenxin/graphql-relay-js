@@ -64,7 +64,7 @@ type NonNullInputType = GraphQLNonNull<
     GraphQLInputObjectType |
     GraphQLList<GraphQLInputType> >;
 
-function nonNull(type:GraphQLInputType):NonNullInputType {
+export function nonNull(type:GraphQLInputType):NonNullInputType {
   if ( type instanceof GraphQLNonNull) {
     return type;
   } else {
