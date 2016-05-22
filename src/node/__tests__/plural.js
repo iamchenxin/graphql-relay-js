@@ -40,20 +40,22 @@ var userType = new GraphQLObjectType({
   }),
 });
 
+var pluralRootField = pluralIdentifyingRootField({
+  argName: 'usernames',
+  description: 'Map from a username to the user',
+  inputType: GraphQLString,
+  outputType: userType,
+  // $FlowFixMe : rootValue Graphql(mixed) -> relay(object)
+  resolveSingleInput: (username, context, {rootValue: {lang}}) => ({
+    username: username,
+    url: 'www.facebook.com/' + username + '?lang=' + lang
+  }),
+});
+
 var queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
-    usernames: pluralIdentifyingRootField({
-      argName: 'usernames',
-      description: 'Map from a username to the user',
-      inputType: GraphQLString,
-      outputType: userType,
-      // $FlowFixMe : rootValue Graphql(mixed) -> relay(object)
-      resolveSingleInput: (username, context, {rootValue: {lang}}) => ({
-        username: username,
-        url: 'www.facebook.com/' + username + '?lang=' + lang
-      })
-    })
+    usernames: pluralRootField
   })
 });
 
@@ -162,6 +164,13 @@ describe('pluralIdentifyingRootField()', () => {
     };
 
     return expect(graphql(schema, query)).to.become({data: expected});
+  });
+
+  it('only accept Array<> args from GraphQL', () => {
+    return expect(()=>{
+      (pluralRootField:any).resolve({},{usernames: 'test'},{},{});
+    }).to.throw('plural\'s inputArgs must be Array,' +
+    ' but its test(type: string)');
   });
 });
 
