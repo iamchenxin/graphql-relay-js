@@ -22,7 +22,8 @@ import {
 } from 'flow-graphql';
 
 import {
-  nodeDefinitions
+  nodeDefinitions,
+  globalIdField
 } from '../node';
 
 var userData = {
@@ -236,6 +237,39 @@ describe('Node interface and fields', () => {
       };
 
       return expect(graphql(schema, query)).to.become({data: expected});
+    });
+  });
+
+  describe('reliability (#runtime check)', () => {
+    it('nodeField.resolve() will throw a error, ' +
+    'when receieve a non-string args.id from GraphQL', () => {
+      const id = 4;
+      return expect(()=>{
+        (nodeField:any).resolve({},{id: 4},{},{});
+      }).to.throw(`args.id must be string,but its ${id}` +
+        `(type: ${typeof id})` );
+    });
+
+    it('globalIdField() will throw a error, ' +
+      'when receieve a !(string|number) id from upstream', () => {
+      const gIdFielfConfig = globalIdField('test');
+      const id = {test: 4};
+      return expect(()=>{
+        (gIdFielfConfig:any).resolve({id: id},{},{},{});
+      }).to.throw('id field must be string|number, ' +
+      'but it is [object Object](type: object)');
+    });
+
+    // most of this case must be caused by user's wrong typo.
+    it('globalIdField() will throw a error, when the user custom idFetcher ' +
+      'return a !(string|number) id', () => {
+      const source = {customId: '2'};
+      // do a wrong typo customId vs customid
+      const gIdFielfConfig = globalIdField('test',src => src.customid);
+      return expect(()=>{
+        (gIdFielfConfig:any).resolve(source,{},{},{});
+      }).to.throw('globalIdField.idFetcher must return a string|number, ' +
+      'check your code.');
     });
   });
 

@@ -386,5 +386,13 @@ describe('mutationWithClientMutationId()', () => {
 
       return expect(graphql(schema, query)).to.become({data: expected});
     });
+
+    it('must get a args.input:Object from GraphQL', () => {
+      const args = {input: 'wrongType'};
+      return expect(()=>{
+        (simpleMutationWithThunkFields:any).resolve({},args,{},{});
+      }).to.throw('args.input must be string,' +
+      ' but its wrongType(type: string)');
+    });
   });
 });

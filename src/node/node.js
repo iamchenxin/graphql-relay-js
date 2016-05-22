@@ -68,7 +68,17 @@ export function nodeDefinitions(
         description: 'The ID of an object'
       }
     },
-    resolve: (obj, {id}, context, info) => idFetcher(id, context, info),
+    resolve: (obj, args, context, info) => {
+      // ToDo : should make static flow check later
+      // graphql should pass a args.id(GraphQLID) in.
+      // which always serialize to a string in graphql v0.6
+      const id:string = (typeof args.id === 'string') ? args.id
+        : (()=>{
+          throw new Error(`args.id must be string,but its ${args.id}` +
+            `(type: ${typeof args.id})`);
+        })();
+      return idFetcher(id, context, info);
+    },
   };
 
   return {nodeInterface, nodeField};
@@ -108,15 +118,37 @@ export function fromGlobalId(globalId: string): ResolvedGlobalId {
  */
 export function globalIdField(
   typeName?: ?string,
-  idFetcher?: (object: any, context: any, info: GraphQLResolveInfo) => string
+  idFetcher?: (object: Object, context: mixed,
+    info: GraphQLResolveInfo) => string
 ): GraphQLFieldConfig {
   return {
     name: 'id',
     description: 'The ID of an object',
     type: new GraphQLNonNull(GraphQLID),
-    resolve: (obj, args, context, info) => toGlobalId(
-      typeName || info.parentType.name,
-      idFetcher ? idFetcher(obj, context, info) : obj.id
-    )
+    resolve: (source, args, context, info) => {
+      // ToDo : should make static flow check later
+      // runtime check for GraphQLNonNull(GraphQLID) : string|number
+      if ( idFetcher ) {
+        let id = check( idFetcher((source:any), context, info),
+        'globalIdField.idFetcher must return a string|number, ' +
+        'check your code.');
+        return toGlobalId(typeName || info.parentType.name, id);
+      } else {
+        let id = check( (source:any).id, 'id field must be string|number, ' +
+        `but it is ${(source:any).id}(type: ${typeof (source:any).id})`);
+        return toGlobalId(typeName || info.parentType.name, id);
+      }
+
+      function check(unId:any,eMsg:string):string {
+        switch (typeof unId) {
+          case 'string':
+            return unId;
+          case 'number':
+            return unId.toString();
+          default:
+            throw new Error(eMsg);
+        }
+      }
+    }
   };
 }

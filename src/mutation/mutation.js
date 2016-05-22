@@ -86,7 +86,14 @@ export function mutationWithClientMutationId(
     args: {
       input: {type: new GraphQLNonNull(inputType)}
     },
-    resolve: (_, {input}, context, info) => {
+    resolve: (_, args, context, info) => {
+      // ToDo: Should make a static flow check later
+      // runtime check GraphQL(mixed) -> Relay(Object)
+      const input:Object = ( args.input instanceof Object) ? args.input
+        : (()=>{
+          throw new Error('args.input must be string,' +
+          ` but its ${args.input}(type: ${typeof args.input})`);
+        })();
       return Promise.resolve(mutateAndGetPayload(input, context, info))
         .then(payload => {
           payload.clientMutationId = input.clientMutationId;

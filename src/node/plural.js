@@ -43,15 +43,19 @@ export function pluralIdentifyingRootField(
             )
           )
   };
-//  console.log(config);
-//  console.dir(inputArgs);
-//  console.dir(inputArgs.usernames.type.ofType.ofType);
   return {
     description: config.description,
     type: new GraphQLList(config.outputType),
     args: inputArgs,
     resolve: (obj, args, context, info) => {
-      var inputs = args[config.argName];
+      const uncheckedInputs = args[config.argName];
+      // ToDo : should make static flow check later
+      // runtime check for args[config.argName] : Array<mixed>
+      const inputs = Array.isArray(uncheckedInputs) ? uncheckedInputs
+        : (()=>{
+          throw new Error('plural\'s inputArgs must be Array, but its' +
+          ` ${uncheckedInputs}(type: ${typeof uncheckedInputs})`);
+        })();
       return Promise.all(inputs.map(
         input => Promise.resolve(
           config.resolveSingleInput(input, context, info)
