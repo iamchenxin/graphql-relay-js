@@ -14,7 +14,7 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
-import {GraphQLInt, GraphQLObjectType, GraphQLSchema, graphql} from 'graphql';
+import {GraphQLInt, GraphQLObjectType, GraphQLSchema, graphql} from 'flow-graphql';
 
 import {
   mutationWithClientMutationId

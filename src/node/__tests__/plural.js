@@ -21,7 +21,7 @@ import {
   GraphQLList,
   GraphQLNonNull,
   graphql
-} from 'graphql';
+} from 'flow-graphql';
 
 import {
   pluralIdentifyingRootField,
