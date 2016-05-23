@@ -23,7 +23,7 @@ import type {
   GraphQLInputObjectType
 } from 'graphql';
 
-type PluralIdentifyingRootFieldConfig = {
+export type PluralIdentifyingRootFieldConfig = {
   argName: string,
   inputType: GraphQLInputType,
   outputType: GraphQLOutputType,

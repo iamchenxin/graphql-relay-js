@@ -57,7 +57,7 @@ export var connectionArgs: GraphQLFieldConfigArgumentMap = {
   ...backwardConnectionArgs,
 };
 
-type ConnectionConfig = {
+export type ConnectionConfig = {
   name?: ?string,
   nodeType: GraphQLObjectType,
   resolveNode?: ?Function,
@@ -66,7 +66,7 @@ type ConnectionConfig = {
   connectionFields?: ?(() => GraphQLFieldConfigMap) | ?GraphQLFieldConfigMap,
 }
 
-type GraphQLConnectionDefinitions = {
+export type GraphQLConnectionDefinitions = {
   edgeType: GraphQLObjectType,
   connectionType: GraphQLObjectType
 }

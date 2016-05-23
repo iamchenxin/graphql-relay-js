@@ -1,3 +1,4 @@
+/* @flow */
 /**
  *  Copyright (c) 2015, Facebook, Inc.
  *  All rights reserved.
@@ -48,3 +49,36 @@ export {
   globalIdField,
   toGlobalId,
 } from './node/node.js';
+
+// EXport types
+export type {
+  ConnectionConfig,
+  GraphQLConnectionDefinitions,
+} from './connection/connection.js';
+
+export type {
+  ConnectionCursor,
+  PageInfo,
+  Connection,
+  Edge,
+  ConnectionArguments
+} from './connection/connectiontypes.js';
+
+export type {
+  mutationFn,
+  MutationConfig,
+} from './mutation/mutation.js';
+
+export type {
+  GraphQLNodeDefinitions,
+  typeResolverFn,
+  ResolvedGlobalId,
+} from './node/node.js';
+
+export type {
+  PluralIdentifyingRootFieldConfig
+} from './node/plural.js';
+
+export type {
+  Base64String
+} from './utils/base64.js';

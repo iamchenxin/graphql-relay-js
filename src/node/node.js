@@ -25,12 +25,12 @@ import {
   unbase64
 } from '../utils/base64.js';
 
-type GraphQLNodeDefinitions = {
+export type GraphQLNodeDefinitions = {
   nodeInterface: GraphQLInterfaceType,
   nodeField: GraphQLFieldConfig
 }
 
-type typeResolverFn = (object: any) => ?GraphQLObjectType;
+export type typeResolverFn = (object: any) => ?GraphQLObjectType;
 
 /**
  * Given a function to map from an ID to an underlying object, and a function
@@ -84,7 +84,7 @@ export function nodeDefinitions(
   return {nodeInterface, nodeField};
 }
 
-type ResolvedGlobalId = {
+export type ResolvedGlobalId = {
   type: string,
   id: string
 }

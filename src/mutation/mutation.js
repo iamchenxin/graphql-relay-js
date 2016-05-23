@@ -22,8 +22,8 @@ import type {
   GraphQLResolveInfo
 } from 'graphql';
 
-type mutationFn = (object: Object, ctx: mixed, info: GraphQLResolveInfo) =>
-    ( Object | Promise<Object> );
+export type mutationFn = (object: Object, ctx: mixed,
+  info: GraphQLResolveInfo) => ( Object | Promise<Object> );
 
 function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
   return typeof thingOrThunk === 'function' ? thingOrThunk() : thingOrThunk;
@@ -43,7 +43,7 @@ function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
  * input field, and it should return an Object with a key for each
  * output field. It may return synchronously, or return a Promise.
  */
-type MutationConfig = {
+export type MutationConfig = {
   name: string,
   inputFields: InputObjectConfigFieldMap,
   outputFields: GraphQLFieldConfigMap,
